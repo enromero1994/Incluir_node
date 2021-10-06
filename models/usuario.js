@@ -38,7 +38,8 @@ const UsuarioSchema = Schema({
 
 UsuarioSchema.methods.toJSON = function(){
     // operador rest para separar __v y password del resto del arreglo que guardo en usuario
-    const {__v,password,...usuario} = this.toObject();
+    const {__v,password, _id, ...usuario} = this.toObject();
+    usuario.uid = _id
     return usuario;
 }
 

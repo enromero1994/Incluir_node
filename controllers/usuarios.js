@@ -77,11 +77,14 @@ const usuariosPatch = (req, res = response) => {
 const usuariosDelete = async (req, res = response) => {
    
     const {id} = req.params
+    //recibo el uid que le pase en el middlewar validar jwt
+    const uid = req.uid
     //const usuario = await Usuario.findByIdAndDelete(id);
     const usuario = await Usuario.findByIdAndUpdate(id, {estado : false})
     res.json({
  
-        msg : `El usuario que se elimino es ${usuario}`
+       usuario,
+       uid
     });
 }
 

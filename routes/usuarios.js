@@ -4,6 +4,7 @@ const {check} = require('express-validator');
 const { usuariosGet, usuariosPost, usuariosPut, usuariosPatch, usuariosDelete } = require('../controllers/usuarios');
 const { esRoleValido, emailExiste, existeUsuarioPorid } = require('../helpers/db-validators');
 const { validarCampos } = require('../middlewares/validar-campos');
+const { validarJWT } = require('../middlewares/validar-jwt')
 const router = Router();
 
 router.get('/', usuariosGet);
@@ -27,7 +28,10 @@ router.post('/', [
     //Estos errores que se toman aca los puedo validar desde el req en el controlador
     validarCampos
 ] ,usuariosPost);
+
+//las validaciones de los middlewares se hacen secuencial, si uno falla los demas no se ejecutan
 router.delete('/:id',[
+    validarJWT,
     check('id','No es un ID valido').isMongoId(),
     check('id').custom(existeUsuarioPorid),
     validarCampos
